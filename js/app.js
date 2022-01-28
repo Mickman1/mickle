@@ -1,5 +1,6 @@
 let correctWord = 'ABCDE'
-let boardState = [...Array(6)].map(e => Array(5))
+let boardEmptySlots = [...Array(6)].map(e => Array(5))
+let boardTiles = [...Array(6)].map(e => Array(5))
 
 for (let i = 0; i < 6; i++) {
 	var row = `<div class='row' id=row-${i}>`
@@ -9,25 +10,59 @@ for (let i = 0; i < 6; i++) {
 		var emptySlot = `<div class='slot empty' id='slot-${i}-${j}'></div>`
 
 		document.getElementById(`row-${i}`).insertAdjacentHTML('beforeend', emptySlot)
-		boardState[i][j] = document.getElementById(`slot-${i}-${j}`)
+		boardEmptySlots[i][j] = document.getElementById(`slot-${i}-${j}`)
 	}
 }
 
 let currentRow = 0
 let currentSlot = 0
 
-document.addEventListener('keypress', function(e) {
-	boardState[currentRow] [currentSlot].classList.remove('empty')
+document.addEventListener('keydown', function(e) {
+	//TODO Check if the key pressed is a letter
+	//TODO Check for Enter and Backspace
 
-	let tile = `<div class='tile'>${e.key}</div>`
-	boardState[currentRow] [currentSlot].insertAdjacentHTML('beforeend', tile)
-
-	if (currentSlot === 4) {
-		currentRow++
-		currentSlot = 0
+	switch (e.key) {
+		case 'Backspace':
+			return backspacePressed();
+		case 'Enter':
+			return enterPressed();
 	}
 
-	else {
-		currentSlot += 1
+	// Removes edge-cases like Function and Modifier keys
+	if (e.key.length > 1) {
+		return;
 	}
+
+	// Regex to check for a letter A-Z
+	if (!/[A-Za-z]+$/.test(e.key)) {
+		return;
+	}
+
+	if (currentSlot === 5) {
+		return;
+	}
+
+	boardEmptySlots[currentRow][currentSlot].classList.remove('empty')
+	boardEmptySlots[currentRow][currentSlot].classList.add('temp-tile')
+
+	let tile = `<div class='tile' id='tile-${currentRow}-${currentSlot}'>${e.key}</div>`
+	boardEmptySlots[currentRow] [currentSlot].insertAdjacentHTML('beforeend', tile)
+	boardTiles[currentRow][currentSlot] = document.getElementById(`tile-${currentRow}-${currentSlot}`)
+
+	currentSlot += 1
 })
+
+function backspacePressed() {
+	if (currentSlot > 0) {
+		boardTiles[currentRow][currentSlot - 1].remove()
+		boardEmptySlots[currentRow][currentSlot - 1].classList.add('empty')
+		boardEmptySlots[currentRow][currentSlot - 1].classList.remove('temp-tile')
+		currentSlot--
+
+		return;
+	}
+}
+
+function enterPressed() {
+
+}
