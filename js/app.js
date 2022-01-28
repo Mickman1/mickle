@@ -1,4 +1,5 @@
-let correctWord = 'moods'
+let correctWord = 'wowza'
+let unfoundLetters = correctWord
 let boardEmptySlots = [...Array(6)].map(e => Array(5))
 let boardTiles = [...Array(6)].map(e => Array(5))
 let foundLetters = []
@@ -66,37 +67,37 @@ function backspacePressed() {
 }
 
 function enterPressed() {
+	if (currentSlot !== 5) {
+		return;
+	}
+
+	unfoundLetters = correctWord
+
 	for (let i = 0; i < 5; i++) {
 		if (correctWord[i] === boardTiles[currentRow][i].innerHTML) {
 			boardTiles[currentRow][i].classList.add('correct-tile')
 			boardTiles[currentRow][i].classList.remove('empty')
-
 			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
 
-			foundLetters.push(boardTiles[currentRow][i].innerHTML)
+			filledTiles.push(i)
+			unfoundLetters = unfoundLetters.replace(boardTiles[currentRow][i].innerHTML, '')
 
 			continue
 		}
 	}
 
 	for (let i = 0; i < 5; i++) {
-		if (foundLetters.includes(boardTiles[currentRow][i].innerHTML)) {
-			boardTiles[currentRow][i].classList.add('incorrect-tile')
-			boardTiles[currentRow][i].classList.remove('empty')
-
-			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
-
+		if (filledTiles.includes(i)) {
 			continue
 		}
-		
-		if (correctWord.includes(boardTiles[currentRow][i].innerHTML)) {
 
+		if (unfoundLetters.includes(boardTiles[currentRow][i].innerHTML)) {
 			boardTiles[currentRow][i].classList.add('misplaced-tile')
 			boardTiles[currentRow][i].classList.remove('empty')
-
 			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
 
-			foundLetters.push(boardTiles[currentRow][i].innerHTML)
+			filledTiles.push(i)
+			unfoundLetters = unfoundLetters.replace(boardTiles[currentRow][i].innerHTML, '')
 		}
 
 		else {
@@ -109,5 +110,5 @@ function enterPressed() {
 
 	currentRow++
 	currentSlot = 0
-	foundLetters = []
+	filledTiles = []
 }
