@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+body {
+	background-color: #121213;
+}
+
 #box {
 	border: 2px solid #FF0000;
 }
@@ -22,9 +26,13 @@
 	box-sizing: border-box;
 }
 
-.game-tile {
+.slot {
 	background-color: #121213;
 	display: inline-block;
+}
+
+.empty {
+	border: 2px solid #3a3a3c;
 }
 
 .row {
