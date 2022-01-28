@@ -1,6 +1,7 @@
 let correctWord = 'abcde'
 let boardEmptySlots = [...Array(6)].map(e => Array(5))
 let boardTiles = [...Array(6)].map(e => Array(5))
+let foundLetters = []
 
 for (let i = 0; i < 6; i++) {
 	var row = `<div class='row' id=row-${i}>`
@@ -71,12 +72,28 @@ function enterPressed() {
 
 			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
 
+			foundLetters.push(boardTiles[currentRow][i].innerHTML)
+
 			continue
 		}
+	}
 
+	for (let i = 0; i < 5; i++) {
+		if (foundLetters.includes(boardTiles[currentRow][i].innerHTML)) {
+			continue
+		}
 		if (correctWord.includes(boardTiles[currentRow][i].innerHTML)) {
 
 			boardTiles[currentRow][i].classList.add('misplaced-tile')
+			boardTiles[currentRow][i].classList.remove('empty')
+
+			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
+
+			foundLetters.push(boardTiles[currentRow][i].innerHTML)
+		}
+
+		else {
+			boardTiles[currentRow][i].classList.add('incorrect-tile')
 			boardTiles[currentRow][i].classList.remove('empty')
 
 			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
@@ -85,4 +102,5 @@ function enterPressed() {
 
 	currentRow++
 	currentSlot = 0
+	foundLetters = []
 }
