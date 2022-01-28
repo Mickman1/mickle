@@ -1,4 +1,4 @@
-let correctWord = 'ABCDE'
+let correctWord = 'abcde'
 let boardEmptySlots = [...Array(6)].map(e => Array(5))
 let boardTiles = [...Array(6)].map(e => Array(5))
 
@@ -64,5 +64,25 @@ function backspacePressed() {
 }
 
 function enterPressed() {
+	for (let i = 0; i < 5; i++) {
+		if (correctWord[i] === boardTiles[currentRow][i].innerHTML) {
+			boardTiles[currentRow][i].classList.add('correct-tile')
+			boardTiles[currentRow][i].classList.remove('empty')
 
+			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
+
+			continue
+		}
+
+		if (correctWord.includes(boardTiles[currentRow][i].innerHTML)) {
+
+			boardTiles[currentRow][i].classList.add('misplaced-tile')
+			boardTiles[currentRow][i].classList.remove('empty')
+
+			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
+		}
+	}
+
+	currentRow++
+	currentSlot = 0
 }
