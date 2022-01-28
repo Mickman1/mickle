@@ -35,6 +35,22 @@ body {
 	border: 2px solid #3a3a3c;
 }
 
+.temp-tile {
+	border: 2px solid #565758;
+}
+
+.incorrect-tile {
+	background-color: #3a3a3c;
+}
+
+.correct-tile {
+	background-color: #538d4e;
+}
+
+.misplaced-tile {
+	background-color: #b59f3b;
+}
+
 .row {
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);
@@ -43,7 +59,6 @@ body {
 
 .tile {
 	color: #d7dadc;
-	background-color: #3a3a3c;
 	font-family: 'Roboto';
 	width: 100%;
 	height: 100%;
