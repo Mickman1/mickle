@@ -1,7 +1,8 @@
-let correctWord = 'abcde'
+let correctWord = 'moods'
 let boardEmptySlots = [...Array(6)].map(e => Array(5))
 let boardTiles = [...Array(6)].map(e => Array(5))
 let foundLetters = []
+let filledTiles = []
 
 for (let i = 0; i < 6; i++) {
 	var row = `<div class='row' id=row-${i}>`
@@ -80,8 +81,14 @@ function enterPressed() {
 
 	for (let i = 0; i < 5; i++) {
 		if (foundLetters.includes(boardTiles[currentRow][i].innerHTML)) {
+			boardTiles[currentRow][i].classList.add('incorrect-tile')
+			boardTiles[currentRow][i].classList.remove('empty')
+
+			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
+
 			continue
 		}
+		
 		if (correctWord.includes(boardTiles[currentRow][i].innerHTML)) {
 
 			boardTiles[currentRow][i].classList.add('misplaced-tile')
