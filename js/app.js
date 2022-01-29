@@ -52,22 +52,22 @@ document.addEventListener('keydown', function(e) {
 })
 
 document.addEventListener('click', function(e) {
-	console.log(e)
+	if (e.target.id == 'backspace') {
+		backspacePressed()
+		return;
+	}
 
 	if (e.target.tagName === 'BUTTON') {
 		let button = e.target
-		console.log(button.innerText)
-		/*let buttonId = button.id
 
-		if (buttonId === 'reset') {
-			resetGame()
+		if (button.innerText === 'ENTER') {
+			enterPressed()
+			return;
 		}
 
-		else if (buttonId === 'submit') {
-			submitWord()
-		}*/
+		// Emulate a key press for the right on-screen keyboard button
+		document.dispatchEvent(new KeyboardEvent('keydown', { 'key': button.innerText }))
 	}
-
 })
 
 function backspacePressed() {
@@ -91,6 +91,7 @@ function enterPressed() {
 	for (let i = 0; i < 5; i++) {
 		fullSubmittedWord += boardTiles[currentRow][i].innerText
 	}
+	
 	fullSubmittedWord = fullSubmittedWord.toLowerCase()
 	
 	if (!wordList.includes(fullSubmittedWord)) {
@@ -138,6 +139,10 @@ function enterPressed() {
 	currentRow += 1
 	currentSlot = 0
 	filledTiles = []
+}
+
+function colorKeyboard() {
+
 }
 
 function readTextFile(file) {
