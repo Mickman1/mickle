@@ -118,3 +118,99 @@ body {
 		transform: rotateX(0);
 	}
 }
+
+
+:host {
+	height: 200px;
+}
+
+#keyboard {
+	margin: 0 8px;
+	user-select: none;
+}
+
+.button-row {
+	display: flex;
+	width: 100%;
+	margin: 0 auto 8px;
+	/* https://stackoverflow.com/questions/46167604/ios-html-disable-double-tap-to-zoom */
+	touch-action: manipulation;
+}
+
+button {
+	font-family: 'Clear Sans';
+	font-weight: normal;
+	border: 0;
+	padding: 0;
+	margin: 0 6px 0 0;
+	height: 58px;
+	border-radius: 4px;
+	cursor: pointer;
+	user-select: none;
+	background-color: #818384;
+	color: #d7dadc;
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-transform: uppercase;
+	-webkit-tap-highlight-color: rgba(0,0,0,0.3);
+}
+
+button:focus {
+	outline: none;
+}
+
+button.fade {
+	transition: background-color 0.1s ease, color 0.1s ease;
+}
+
+button:last-of-type {
+	margin: 0;
+}
+
+.half {
+	flex: 0.5;
+}
+
+.one {
+	flex: 1;
+}
+
+.one-and-a-half {
+	flex: 1.5;
+	font-size: 12px;
+}
+
+.two {
+	flex: 2;
+}
+
+button[data-state='correct'] {
+	background-color: #538d4e;
+	color: #d7dadc;
+}
+
+button[data-state='misplaced'] {
+	background-color: #b59f3b;
+	color: #d7dadc;
+}
+
+button[data-state='incorrect'] {
+	background-color: #3a3a3c;
+	color: #d7dadc;
+}
+
+button[data-state='normal'] {
+	background-color: #818384;
+	color: #d7dadc;
+}
+
+#game {
+	width: 100%;
+	max-width: 500px;
+	margin: 0 auto;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
