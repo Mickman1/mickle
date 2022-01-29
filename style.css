@@ -11,6 +11,25 @@ body {
 	background-color: var(--color-background);
 }
 
+#game-container {
+	width: 100%;
+	max-width: var(--game-max-width);
+	margin: 0 auto;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+#header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-family: 'Comic Sans MS';
+	font-size: 3em;
+	color: #fc22bc;
+	-webkit-text-stroke: 1px rgb(147, 158, 255);
+}
+
 #board-container {
 	display: flex;
 	justify-content: center;
