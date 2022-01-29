@@ -1,9 +1,11 @@
-let correctWord = 'wowza'
-let unfoundLetters = correctWord
-let boardEmptySlots = [...Array(6)].map(e => Array(5))
-let boardTiles = [...Array(6)].map(e => Array(5))
-let foundLetters = []
+let correctWord = 'knife'
+let wordList = readTextFile('../words.txt')
+let boardEmptySlots = [...Array(6)].map(() => Array(5))
+let boardTiles = [...Array(6)].map(() => Array(5))
 let filledTiles = []
+let unfoundLetters = correctWord
+let currentRow = 0
+let currentSlot = 0
 
 for (let i = 0; i < 6; i++) {
 	var row = `<div class='row' id=row-${i}>`
@@ -17,13 +19,7 @@ for (let i = 0; i < 6; i++) {
 	}
 }
 
-let currentRow = 0
-let currentSlot = 0
-
 document.addEventListener('keydown', function(e) {
-	//TODO Check if the key pressed is a letter
-	//TODO Check for Enter and Backspace
-
 	switch (e.key) {
 		case 'Backspace':
 			return backspacePressed();
@@ -48,11 +44,30 @@ document.addEventListener('keydown', function(e) {
 	boardEmptySlots[currentRow][currentSlot].classList.remove('empty')
 	boardEmptySlots[currentRow][currentSlot].classList.add('temp-tile')
 
-	let tile = `<div class='tile' id='tile-${currentRow}-${currentSlot}'>${e.key}</div>`
+	let tile = `<div class='tile' id='tile-${currentRow}-${currentSlot}' data-animation='pop'>${e.key}</div>`
 	boardEmptySlots[currentRow] [currentSlot].insertAdjacentHTML('beforeend', tile)
 	boardTiles[currentRow][currentSlot] = document.getElementById(`tile-${currentRow}-${currentSlot}`)
 
 	currentSlot += 1
+})
+
+document.addEventListener('click', function(e) {
+	console.log(e)
+
+	if (e.target.tagName === 'BUTTON') {
+		let button = e.target
+		console.log(button.innerText)
+		/*let buttonId = button.id
+
+		if (buttonId === 'reset') {
+			resetGame()
+		}
+
+		else if (buttonId === 'submit') {
+			submitWord()
+		}*/
+	}
+
 })
 
 function backspacePressed() {
@@ -60,7 +75,8 @@ function backspacePressed() {
 		boardTiles[currentRow][currentSlot - 1].remove()
 		boardEmptySlots[currentRow][currentSlot - 1].classList.add('empty')
 		boardEmptySlots[currentRow][currentSlot - 1].classList.remove('temp-tile')
-		currentSlot--
+		
+		currentSlot -= 1
 
 		return;
 	}
@@ -68,6 +84,17 @@ function backspacePressed() {
 
 function enterPressed() {
 	if (currentSlot !== 5) {
+		return;
+	}
+
+	let fullSubmittedWord = ''
+	for (let i = 0; i < 5; i++) {
+		fullSubmittedWord += boardTiles[currentRow][i].innerText
+	}
+	fullSubmittedWord = fullSubmittedWord.toLowerCase()
+	
+	if (!wordList.includes(fullSubmittedWord)) {
+		alert(`${capitalizeFirstLetter(fullSubmittedWord)} is not a valid word!`)
 		return;
 	}
 
@@ -108,7 +135,19 @@ function enterPressed() {
 		}
 	}
 
-	currentRow++
+	currentRow += 1
 	currentSlot = 0
 	filledTiles = []
+}
+
+function readTextFile(file) {
+	fetch(file)
+		.then(response => response.text())
+		.then(data => {
+			wordList = data.split('\n')
+		})
+}
+
+function capitalizeFirstLetter(string) {
+	return string.charAt(0).toUpperCase() + string.slice(1);
 }
