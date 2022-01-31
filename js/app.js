@@ -103,14 +103,14 @@ function enterPressed() {
 	unfoundLetters = correctWord
 
 	for (let i = 0; i < 5; i++) {
-		console.log(boardTiles[currentRow][i].innerHTML)
 		if (correctWord[i] === boardTiles[currentRow][i].innerHTML) {
 			// Color correct tile green
 			boardTiles[currentRow][i].classList.add('correct-tile')
 
 			// Color correct key green
-			document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`).classList.remove('key-normal')
-			document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`).classList.add('key-correct')
+			let keyElement = document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`)
+			keyElement.classList.remove('key-normal', 'key-misplaced', 'incorrect')
+			keyElement.classList.add('key-correct')
 
 			boardTiles[currentRow][i].classList.remove('empty')
 			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
@@ -132,8 +132,12 @@ function enterPressed() {
 			boardTiles[currentRow][i].classList.add('misplaced-tile')
 			
 			// Color misplaced key yellow
-			document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`).classList.remove('key-normal')
-			document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`).classList.add('key-misplaced')
+			let keyElement = document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`)
+
+			if (!keyElement.classList.contains('key-correct')) {
+				keyElement.classList.remove('key-normal', 'key-incorrect')
+				keyElement.classList.add('key-misplaced')
+			}
 
 			boardTiles[currentRow][i].classList.remove('empty')
 			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
@@ -147,8 +151,12 @@ function enterPressed() {
 			boardTiles[currentRow][i].classList.add('incorrect-tile')
 
 			// Color incorrect key grey
-			document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`).classList.remove('key-normal')
-			document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`).classList.add('key-incorrect')
+			let keyElement = document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`)
+
+			if (!keyElement.classList.contains('key-correct', 'key-misplaced')) {
+				keyElement.classList.remove('key-normal')
+				keyElement.classList.add('key-incorrect')
+			}
 
 			boardTiles[currentRow][i].classList.remove('empty')
 			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
