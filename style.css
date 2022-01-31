@@ -214,22 +214,22 @@ button:last-of-type {
 	flex: 2;
 }
 
-button[data-state='correct'] {
+.key-correct {
 	background-color: var(--color-correct);
 	color: #d7dadc;
 }
 
-button[data-state='misplaced'] {
+.key-misplaced {
 	background-color: var(--color-misplaced);
 	color: #d7dadc;
 }
 
-button[data-state='incorrect'] {
+.key-incorrect {
 	background-color: var(--color-incorrect);
 	color: #d7dadc;
 }
 
-button[data-state='normal'] {
+.key-normal {
 	background-color: var(--color-button-normal);
 	color: #d7dadc;
 }
