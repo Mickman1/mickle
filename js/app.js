@@ -1,5 +1,5 @@
-let correctWord = 'ladle'
-let wordList = readTextFile('../words.txt')
+let correctWord = 'parry'
+let wordList = readTextFile('../words.json')
 let boardEmptySlots = [...Array(6)].map(() => Array(5))
 let boardTiles = [...Array(6)].map(() => Array(5))
 let filledTiles = []
@@ -153,7 +153,7 @@ function enterPressed() {
 			// Color incorrect key grey
 			let keyElement = document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`)
 
-			if (!keyElement.classList.contains('key-correct', 'key-misplaced')) {
+			if (!keyElement.classList.contains('key-misplaced') && !keyElement.classList.contains('key-correct')) {
 				keyElement.classList.remove('key-normal')
 				keyElement.classList.add('key-incorrect')
 			}
@@ -168,15 +168,11 @@ function enterPressed() {
 	filledTiles = []
 }
 
-function colorKeyboard() {
-
-}
-
 function readTextFile(file) {
 	fetch(file)
-		.then(response => response.text())
+		.then(response => response.json())
 		.then(data => {
-			wordList = data.split('\n')
+			wordList = data.words
 		})
 }
 
