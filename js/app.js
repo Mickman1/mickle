@@ -1,4 +1,4 @@
-let correctWord = 'knife'
+let correctWord = 'ladle'
 let wordList = readTextFile('../words.txt')
 let boardEmptySlots = [...Array(6)].map(() => Array(5))
 let boardTiles = [...Array(6)].map(() => Array(5))
@@ -44,7 +44,7 @@ document.addEventListener('keydown', function(e) {
 	boardEmptySlots[currentRow][currentSlot].classList.remove('empty')
 	boardEmptySlots[currentRow][currentSlot].classList.add('temp-tile')
 
-	let tile = `<div class='tile' id='tile-${currentRow}-${currentSlot}' data-animation='pop'>${e.key}</div>`
+	let tile = `<div class='tile' id='tile-${currentRow}-${currentSlot}' data-animation='pop'>${e.key.toLowerCase()}</div>`
 	boardEmptySlots[currentRow] [currentSlot].insertAdjacentHTML('beforeend', tile)
 	boardTiles[currentRow][currentSlot] = document.getElementById(`tile-${currentRow}-${currentSlot}`)
 
@@ -66,7 +66,7 @@ document.addEventListener('click', function(e) {
 		}
 
 		// Emulate a key press for the right on-screen keyboard button
-		document.dispatchEvent(new KeyboardEvent('keydown', { 'key': button.innerText }))
+		document.dispatchEvent(new KeyboardEvent('keydown', { 'key': button.innerText.toLowerCase() }))
 	}
 })
 
@@ -83,6 +83,7 @@ function backspacePressed() {
 }
 
 function enterPressed() {
+	// Check if all 5 letters have been filled
 	if (currentSlot !== 5) {
 		return;
 	}
@@ -102,8 +103,15 @@ function enterPressed() {
 	unfoundLetters = correctWord
 
 	for (let i = 0; i < 5; i++) {
+		console.log(boardTiles[currentRow][i].innerHTML)
 		if (correctWord[i] === boardTiles[currentRow][i].innerHTML) {
+			// Color correct tile green
 			boardTiles[currentRow][i].classList.add('correct-tile')
+
+			// Color correct key green
+			document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`).classList.remove('key-normal')
+			document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`).classList.add('key-correct')
+
 			boardTiles[currentRow][i].classList.remove('empty')
 			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
 
@@ -120,7 +128,13 @@ function enterPressed() {
 		}
 
 		if (unfoundLetters.includes(boardTiles[currentRow][i].innerHTML)) {
+			// Color misplaced tile yellow
 			boardTiles[currentRow][i].classList.add('misplaced-tile')
+			
+			// Color misplaced key yellow
+			document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`).classList.remove('key-normal')
+			document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`).classList.add('key-misplaced')
+
 			boardTiles[currentRow][i].classList.remove('empty')
 			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
 
@@ -129,9 +143,14 @@ function enterPressed() {
 		}
 
 		else {
+			// Color incorrect tile grey
 			boardTiles[currentRow][i].classList.add('incorrect-tile')
-			boardTiles[currentRow][i].classList.remove('empty')
 
+			// Color incorrect key grey
+			document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`).classList.remove('key-normal')
+			document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`).classList.add('key-incorrect')
+
+			boardTiles[currentRow][i].classList.remove('empty')
 			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
 		}
 	}
