@@ -6,6 +6,7 @@ let filledTiles = []
 let unfoundLetters = correctWord
 let currentRow = 0
 let currentSlot = 0
+let toastNum = 0
 
 for (let i = 0; i < 6; i++) {
 	var row = `<div class='row' id=row-${i}>`
@@ -45,7 +46,7 @@ document.addEventListener('keydown', function(e) {
 	boardEmptySlots[currentRow][currentSlot].classList.add('temp-tile')
 
 	let tile = `<div class='tile' id='tile-${currentRow}-${currentSlot}' data-animation='pop'>${e.key.toLowerCase()}</div>`
-	boardEmptySlots[currentRow] [currentSlot].insertAdjacentHTML('beforeend', tile)
+	boardEmptySlots[currentRow][currentSlot].insertAdjacentHTML('beforeend', tile)
 	boardTiles[currentRow][currentSlot] = document.getElementById(`tile-${currentRow}-${currentSlot}`)
 
 	currentSlot += 1
@@ -95,8 +96,29 @@ function enterPressed() {
 	
 	fullSubmittedWord = fullSubmittedWord.toLowerCase()
 	
+	// Check if submitted word is in the wordList
 	if (!wordList.includes(fullSubmittedWord)) {
-		alert(`${capitalizeFirstLetter(fullSubmittedWord)} is not a valid word!`)
+		//alert(`${capitalizeFirstLetter(fullSubmittedWord)} is not a valid word!`)
+
+		// Adds 'shake' animation to all 5 tiles
+		// Sets timeout to remove them after 600ms
+		for (let i = 0; i < 5; i++) {
+			boardTiles[currentRow][i].setAttribute('data-animation', 'shake')
+			setTimeout(() => {
+				boardTiles[currentRow][i].removeAttribute('data-animation')
+			}, 600)
+		}
+		
+		toastNum += 1
+
+		let toastDiv = `<div class='toaster' id='game-toaster'></div>`
+		document.getElementById('game-container').insertAdjacentHTML('beforeend', toastDiv)
+		
+		let toast = `<div class='toast' id='toast-${toastNum}'>${capitalizeFirstLetter(fullSubmittedWord)} is not a valid word!</div>`
+		document.getElementById('game-toaster').insertAdjacentHTML('beforeend', toast)
+
+		fadeOutEffect(toastNum)
+
 		return;
 	}
 
@@ -178,4 +200,22 @@ function readTextFile(file) {
 
 function capitalizeFirstLetter(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function fadeOutEffect(toastNum) {
+	var fadeTarget = document.getElementById(`toast-${toastNum}`)
+	var fadeEffect = setInterval(function () {
+		if (!fadeTarget.style.opacity) {
+			fadeTarget.style.opacity = 1
+		}
+
+		if (fadeTarget.style.opacity > 0) {
+			fadeTarget.style.opacity -= 0.05
+		}
+
+		else {
+			clearInterval(fadeEffect)
+			document.getElementById(`toast-${toastNum}`).remove()
+		}
+	}, 100)
 }
