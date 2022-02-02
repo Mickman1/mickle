@@ -7,8 +7,24 @@
 	--color-button-normal: #818384;
 }
 
-body {
+html, body {
+	height: 100%;
+	margin: 0;
 	background-color: var(--color-background);
+}
+
+@media screen and (max-height: 660px) {
+	#board {
+		width: 233px;
+		height: 280px;
+	}
+}
+
+@media screen and (min-height: 660px) {
+	#board {
+		width: 350px;
+		height: 420px;
+	}
 }
 
 #game-container {
@@ -39,8 +55,6 @@ body {
 }
 
 #board {
-	width: 350px;
-	height: 420px;
 	display: grid;
 	grid-template-rows: repeat(6, 1fr);
 	grid-gap: 5px;
@@ -106,6 +120,11 @@ body {
 	animation-duration: 100ms;
 }
 
+.tile[data-animation='shake'] {
+	animation-name: Shake;
+	animation-duration: 600ms;
+}
+
 @keyframes PopIn {
 	from {
 		transform: scale(0.8);
@@ -147,14 +166,21 @@ body {
 	}
 }
 
+.full-height {
+  height: 100%;
+}
 
 :host {
 	height: 200px;
 }
 
 #keyboard {
-	margin: 0 8px;
 	user-select: none;
+	width: 100%;
+	max-width: 500px;
+	margin: 0 auto;
+	flex-direction: column;
+	padding-bottom: 8px;
 }
 
 .button-row {
@@ -234,12 +260,79 @@ button:last-of-type {
 	color: #d7dadc;
 }
 
-#game {
-	width: 100%;
-	max-width: 500px;
-	margin: 0 auto;
-	display: flex;
-	flex-direction: column;
-	position: fixed;
-	bottom: 10px;
+.shake {
+	animation-name: Shake;
+	animation-duration: 600ms;
+	animation-play-state: paused;
+}
+
+@keyframes Bounce {
+	0%, 20% {
+		transform: translateY(0);
+	}
+	40% {
+		transform: translateY(-30px);
+	}
+	50% {
+		transform: translateY(5px);
+	}
+	60% {
+		transform: translateY(-15px);
+	}
+	80% {
+		transform: translateY(2px);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
+@keyframes Shake {
+	10%,
+	90% {
+		transform: translateX(-1px);
+	}
+
+	20%,
+	80% {
+		transform: translateX(2px);
+	}
+
+	30%,
+	50%,
+	70% {
+		transform: translateX(-4px);
+	}
+
+	40%,
+	60% {
+		transform: translateX(4px);
+	}
+}
+
+.toaster {
+	position: absolute;
+	top: 10%;
+	left: 50%;
+	transform: translate(-50%, 0);
+	pointer-events: none;
+	width: fit-content;
+}
+
+.toast {
+	font-family: Arial;
+	position: relative;
+	margin: 16px;
+	background-color: #1a1a1b;
+	color: white;
+	padding: 16px;
+	border: none;
+	border-radius: 4px;
+	opacity: 1;
+	transition: opacity 300ms cubic-bezier(0.645, 0.045, 0.355, 1);
+	font-weight: 700;
+}
+
+.toast.fade {
+	opacity: 0;
 }
