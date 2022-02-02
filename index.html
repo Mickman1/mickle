@@ -13,62 +13,59 @@
 </head>
 <body>
 	
-	<header id='header'>MICKLE</header>
 
-	<div id='game-container'>
+	<div class='full-height' id='game-container'>
+		<header id='header' style='margin: 0;'>MICKLE</header>
 		<div id='board-container'>
 			<div id='board'>
 			</div>
 		</div>
-
-		<div id='game'>
-			<div id='keyboard'>
-				<div class='button-row'>
-					<button id='key-q' data-state='normal' class='key-normal'>q</button>
-					<button id='key-w' data-state='normal' class='key-normal'>w</button>
-					<button id='key-e' data-state='normal' class='key-normal'>e</button>
-					<button id='key-r' data-state='normal' class='key-normal'>r</button>
-					<button id='key-t' data-state='normal' class='key-normal'>t</button>
-					<button id='key-y' data-state='normal' class='key-normal'>y</button>
-					<button id='key-u' data-state='normal' class='key-normal'>u</button>
-					<button id='key-i' data-state='normal' class='key-normal'>i</button>
-					<button id='key-o' data-state='normal' class='key-normal'>o</button>
-					<button id='key-p' data-state='normal' class='key-normal'>p</button>
-				</div>
-				<div class='button-row'>
-					<div class='spacer half'></div>
-					<button id='key-a' data-state='normal' class='key-normal'>a</button>
-					<button id='key-s' data-state='normal' class='key-normal'>s</button>
-					<button id='key-d' data-state='normal' class='key-normal'>d</button>
-					<button id='key-f' data-state='normal' class='key-normal'>f</button>
-					<button id='key-g' data-state='normal' class='key-normal'>g</button>
-					<button id='key-h' data-state='normal' class='key-normal'>h</button>
-					<button id='key-j' data-state='normal' class='key-normal'>j</button>
-					<button id='key-k' data-state='normal' class='key-normal'>k</button>
-					<button id='key-l' data-state='normal' class='key-normal'>l</button>
-					<div class='spacer half'></div>
-				</div>
-				<div class='button-row'>
-					<button id='↵' data-state='normal' class='one-and-a-half'>enter</button>
-					<button id='key-z' data-state='normal' class='key-normal'>z</button>
-					<button id='key-x' data-state='normal' class='key-normal'>x</button>
-					<button id='key-c' data-state='normal' class='key-normal'>c</button>
-					<button id='key-v' data-state='normal' class='key-normal'>v</button>
-					<button id='key-b' data-state='normal' class='key-normal'>b</button>
-					<button id='key-n' data-state='normal' class='key-normal'>n</button>
-					<button id='key-m' data-state='normal' class='key-normal'>m</button>
-					<button id='backspace' id='←' data-state='normal' class='one-and-a-half'>
-						<game-icon icon='backspace'>
-							<svg id='backspace' xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 0 24 24' width='24'>
-								<path id='backspace' fill='#d7dadc'
-									d='M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z'>
-								</path>
-							</svg>
-						</game-icon>
-					</button>
-				</div>
+			
+		<div id='keyboard'>
+			<div class='button-row'>
+				<button id='key-q' data-state='normal' class='key-normal'>q</button>
+				<button id='key-w' data-state='normal' class='key-normal'>w</button>
+				<button id='key-e' data-state='normal' class='key-normal'>e</button>
+				<button id='key-r' data-state='normal' class='key-normal'>r</button>
+				<button id='key-t' data-state='normal' class='key-normal'>t</button>
+				<button id='key-y' data-state='normal' class='key-normal'>y</button>
+				<button id='key-u' data-state='normal' class='key-normal'>u</button>
+				<button id='key-i' data-state='normal' class='key-normal'>i</button>
+				<button id='key-o' data-state='normal' class='key-normal'>o</button>
+				<button id='key-p' data-state='normal' class='key-normal'>p</button>
+			</div>
+			<div class='button-row'>
+				<div class='spacer half'></div>
+				<button id='key-a' data-state='normal' class='key-normal'>a</button>
+				<button id='key-s' data-state='normal' class='key-normal'>s</button>
+				<button id='key-d' data-state='normal' class='key-normal'>d</button>
+				<button id='key-f' data-state='normal' class='key-normal'>f</button>
+				<button id='key-g' data-state='normal' class='key-normal'>g</button>
+				<button id='key-h' data-state='normal' class='key-normal'>h</button>
+				<button id='key-j' data-state='normal' class='key-normal'>j</button>
+				<button id='key-k' data-state='normal' class='key-normal'>k</button>
+				<button id='key-l' data-state='normal' class='key-normal'>l</button>
+				<div class='spacer half'></div>
+			</div>
+			<div class='button-row'>
+				<button id='↵' data-state='normal' class='one-and-a-half'>enter</button>
+				<button id='key-z' data-state='normal' class='key-normal'>z</button>
+				<button id='key-x' data-state='normal' class='key-normal'>x</button>
+				<button id='key-c' data-state='normal' class='key-normal'>c</button>
+				<button id='key-v' data-state='normal' class='key-normal'>v</button>
+				<button id='key-b' data-state='normal' class='key-normal'>b</button>
+				<button id='key-n' data-state='normal' class='key-normal'>n</button>
+				<button id='key-m' data-state='normal' class='key-normal'>m</button>
+				<button id='backspace' id='←' data-state='normal' class='one-and-a-half'>
+					<game-icon icon='backspace'>
+						<svg id='backspace' xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 0 24 24' width='24'>
+							<path id='backspace' fill='#d7dadc'
+								d='M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z'>
+							</path>
+						</svg>
+					</game-icon>
+				</button>
 			</div>
 		</div>
-	</div>
 </body>
 </html>
