@@ -169,6 +169,8 @@ html, body {
 	animation-name: FlipIn;
 	animation-duration: 250ms;
 	animation-timing-function: ease-in;
+	will-change: transform;
+	animation-fill-mode: forwards;
 }
 
 @keyframes FlipIn {
@@ -184,6 +186,8 @@ html, body {
 	animation-name: FlipOut;
 	animation-duration: 250ms;
 	animation-timing-function: ease-in;
+	will-change: transform;
+	animation-fill-mode: forwards;
 }
 
 @keyframes FlipOut {
