@@ -125,19 +125,18 @@ function enterPressed() {
 	}
 
 	unfoundLetters = correctWord
+	let tileColorsArray = Array(5)
 
 	for (let i = 0; i < 5; i++) {
 		if (correctWord[i] === boardTiles[currentRow][i].innerHTML) {
 			// Color correct tile green
-			boardTiles[currentRow][i].classList.add('correct-tile')
+			tileColorsArray[i] = 'correct-tile'
 
 			// Color correct key green
 			let keyElement = document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`)
 			keyElement.classList.remove('key-normal', 'key-misplaced', 'incorrect')
 			keyElement.classList.add('key-correct')
 
-			boardTiles[currentRow][i].classList.remove('empty')
-			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
 
 			filledTiles.push(i)
 			unfoundLetters = unfoundLetters.replace(boardTiles[currentRow][i].innerHTML, '')
@@ -153,7 +152,7 @@ function enterPressed() {
 
 		if (unfoundLetters.includes(boardTiles[currentRow][i].innerHTML)) {
 			// Color misplaced tile yellow
-			boardTiles[currentRow][i].classList.add('misplaced-tile')
+			tileColorsArray[i] = 'misplaced-tile'
 			
 			// Color misplaced key yellow
 			let keyElement = document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`)
@@ -163,8 +162,6 @@ function enterPressed() {
 				keyElement.classList.add('key-misplaced')
 			}
 
-			boardTiles[currentRow][i].classList.remove('empty')
-			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
 
 			filledTiles.push(i)
 			unfoundLetters = unfoundLetters.replace(boardTiles[currentRow][i].innerHTML, '')
@@ -172,7 +169,7 @@ function enterPressed() {
 
 		else {
 			// Color incorrect tile grey
-			boardTiles[currentRow][i].classList.add('incorrect-tile')
+			tileColorsArray[i] = 'incorrect-tile'
 
 			// Color incorrect key grey
 			let keyElement = document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`)
@@ -182,14 +179,35 @@ function enterPressed() {
 				keyElement.classList.add('key-incorrect')
 			}
 
-			boardTiles[currentRow][i].classList.remove('empty')
-			boardEmptySlots[currentRow][i].classList.remove('temp-tile')
 		}
 	}
+
+	flipTiles(tileColorsArray, currentRow)
 
 	currentRow += 1
 	currentSlot = 0
 	filledTiles = []
+}
+
+function flipTiles(tileColorsArray, row) {
+	let delay = 0
+
+	for (let i = 0; i < 5; i++) {
+		setTimeout(function() {
+			document.getElementById(`slot-${row}-${i}`).setAttribute('data-animation', 'flip-in')
+		}, delay)
+	
+		setTimeout(function() {
+			document.getElementById(`slot-${row}-${i}`).setAttribute('data-animation', 'flip-out')
+
+			boardTiles[row][i].classList.add(tileColorsArray[i])
+
+			boardTiles[row][i].classList.remove('empty')
+			boardEmptySlots[row][i].classList.remove('temp-tile')
+		}, delay + 250)
+
+		delay += 300
+	}
 }
 
 function readWordsFile(file) {
@@ -206,6 +224,7 @@ function generateCorrectWord(file) {
 		.then(data => {
 			let correctWordList = data.correctWords
 			correctWord = correctWordList[Math.floor(Math.random() * correctWordList.length)]
+			correctWord = 'meter'
 		})
 }
 
