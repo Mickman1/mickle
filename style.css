@@ -165,7 +165,7 @@ html, body {
 		opacity: 1;
 	}
 }
-.tile[data-animation='flip-in'] {
+.slot[data-animation='flip-in'] {
 	animation-name: FlipIn;
 	animation-duration: 250ms;
 	animation-timing-function: ease-in;
@@ -180,7 +180,7 @@ html, body {
 	}
 }
 
-.tile[data-animation='flip-out'] {
+.slot[data-animation='flip-out'] {
 	animation-name: FlipOut;
 	animation-duration: 250ms;
 	animation-timing-function: ease-in;
