@@ -1,6 +1,4 @@
-generateCorrectWord('./correctWords.json')
-let correctWord
-
+let correctWord = generateCorrectWord('./correctWords.json')
 let wordList = readWordsFile('./words.json')
 let boardEmptySlots = [...Array(6)].map(() => Array(5))
 let boardTiles = [...Array(6)].map(() => Array(5))
@@ -100,8 +98,6 @@ function enterPressed() {
 	
 	// Check if submitted word is in the wordList
 	if (!wordList.includes(fullSubmittedWord)) {
-		//alert(`${capitalizeFirstLetter(fullSubmittedWord)} is not a valid word!`)
-
 		// Adds 'shake' animation to all 5 tiles
 		// Sets timeout to remove them after 600ms
 		for (let i = 0; i < 5; i++) {
@@ -129,7 +125,7 @@ function enterPressed() {
 
 	for (let i = 0; i < 5; i++) {
 		if (correctWord[i] === boardTiles[currentRow][i].innerHTML) {
-			// Color correct tile green
+			// Add correct-tile to array of tiles to flip and color
 			tileColorsArray[i] = 'correct-tile'
 
 			// Color correct key green
@@ -137,21 +133,19 @@ function enterPressed() {
 			keyElement.classList.remove('key-normal', 'key-misplaced', 'incorrect')
 			keyElement.classList.add('key-correct')
 
-
 			filledTiles.push(i)
 			unfoundLetters = unfoundLetters.replace(boardTiles[currentRow][i].innerHTML, '')
-
-			continue
 		}
 	}
 
 	for (let i = 0; i < 5; i++) {
+		// Skip tiles that already have an assigned color
 		if (filledTiles.includes(i)) {
 			continue
 		}
 
 		if (unfoundLetters.includes(boardTiles[currentRow][i].innerHTML)) {
-			// Color misplaced tile yellow
+			// Add misplaced-tile to array of tiles to flip and color
 			tileColorsArray[i] = 'misplaced-tile'
 			
 			// Color misplaced key yellow
@@ -162,13 +156,12 @@ function enterPressed() {
 				keyElement.classList.add('key-misplaced')
 			}
 
-
 			filledTiles.push(i)
 			unfoundLetters = unfoundLetters.replace(boardTiles[currentRow][i].innerHTML, '')
 		}
 
 		else {
-			// Color incorrect tile grey
+			// Add incorrect-tile to array of tiles to flip and color
 			tileColorsArray[i] = 'incorrect-tile'
 
 			// Color incorrect key grey
@@ -178,7 +171,6 @@ function enterPressed() {
 				keyElement.classList.remove('key-normal')
 				keyElement.classList.add('key-incorrect')
 			}
-
 		}
 	}
 
@@ -189,6 +181,9 @@ function enterPressed() {
 	filledTiles = []
 }
 
+// Flip each tile in the current row, and color them on the 'Flip-Out' animation
+// Also removes the 'temp-tile' and 'empty' classes
+// Delay 250ms between Flip-In and Flip-Out, then 300ms between tiles
 function flipTiles(tileColorsArray, row) {
 	let delay = 0
 
@@ -198,12 +193,12 @@ function flipTiles(tileColorsArray, row) {
 		}, delay)
 	
 		setTimeout(function() {
+			boardEmptySlots[row][i].classList.remove('temp-tile')
+			boardTiles[row][i].classList.remove('empty')
+
 			document.getElementById(`slot-${row}-${i}`).setAttribute('data-animation', 'flip-out')
 
 			boardTiles[row][i].classList.add(tileColorsArray[i])
-
-			boardTiles[row][i].classList.remove('empty')
-			boardEmptySlots[row][i].classList.remove('temp-tile')
 		}, delay + 250)
 
 		delay += 300
@@ -224,7 +219,6 @@ function generateCorrectWord(file) {
 		.then(data => {
 			let correctWordList = data.correctWords
 			correctWord = correctWordList[Math.floor(Math.random() * correctWordList.length)]
-			correctWord = 'meter'
 		})
 }
 
