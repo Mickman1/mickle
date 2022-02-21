@@ -1,5 +1,7 @@
-let correctWord = 'parry'
-let wordList = readTextFile('../words.json')
+generateCorrectWord('./correctWords.json')
+let correctWord
+
+let wordList = readWordsFile('./words.json')
 let boardEmptySlots = [...Array(6)].map(() => Array(5))
 let boardTiles = [...Array(6)].map(() => Array(5))
 let filledTiles = []
@@ -190,11 +192,20 @@ function enterPressed() {
 	filledTiles = []
 }
 
-function readTextFile(file) {
+function readWordsFile(file) {
 	fetch(file)
 		.then(response => response.json())
 		.then(data => {
 			wordList = data.words
+		})
+}
+
+function generateCorrectWord(file) {
+	fetch(file)
+		.then(response => response.json())
+		.then(data => {
+			let correctWordList = data.correctWords
+			correctWord = correctWordList[Math.floor(Math.random() * correctWordList.length)]
 		})
 }
 
