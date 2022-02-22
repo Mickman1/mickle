@@ -131,10 +131,14 @@ function enterPressed() {
 			// Add correct-tile to array of tiles to flip and color
 			tileColorsArray[i] = 'correct-tile'
 
-			// Color correct key green
-			let keyElement = document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`)
-			keyElement.classList.remove('key-normal', 'key-misplaced', 'incorrect')
-			keyElement.classList.add('key-correct')
+			let row = currentRow
+			let column = i
+			setTimeout(function() {
+				// Color correct key green
+				let keyElement = document.getElementById(`key-${boardTiles[row][column].innerHTML}`)
+				keyElement.classList.remove('key-normal', 'key-misplaced', 'incorrect')
+				keyElement.classList.add('key-correct', 'fade')
+			}, 1500)
 
 			filledTiles.push(i)
 			unfoundLetters = unfoundLetters.replace(boardTiles[currentRow][i].innerHTML, '')
@@ -151,13 +155,17 @@ function enterPressed() {
 			// Add misplaced-tile to array of tiles to flip and color
 			tileColorsArray[i] = 'misplaced-tile'
 			
-			// Color misplaced key yellow
-			let keyElement = document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`)
+			let row = currentRow
+			let column = i
+			setTimeout(function() {
+				// Color misplaced key yellow
+				let keyElement = document.getElementById(`key-${boardTiles[row][column].innerHTML}`)
 
-			if (!keyElement.classList.contains('key-correct')) {
-				keyElement.classList.remove('key-normal', 'key-incorrect')
-				keyElement.classList.add('key-misplaced')
-			}
+				if (!keyElement.classList.contains('key-correct')) {
+					keyElement.classList.remove('key-normal', 'key-incorrect')
+					keyElement.classList.add('key-misplaced', 'fade')
+				}
+			}, 1500)
 
 			filledTiles.push(i)
 			unfoundLetters = unfoundLetters.replace(boardTiles[currentRow][i].innerHTML, '')
@@ -167,13 +175,17 @@ function enterPressed() {
 			// Add incorrect-tile to array of tiles to flip and color
 			tileColorsArray[i] = 'incorrect-tile'
 
-			// Color incorrect key grey
-			let keyElement = document.getElementById(`key-${boardTiles[currentRow][i].innerHTML}`)
+			let row = currentRow
+			let column = i
+			setTimeout(function() {
+				// Color incorrect key grey
+				let keyElement = document.getElementById(`key-${boardTiles[row][column].innerHTML}`)
 
-			if (!keyElement.classList.contains('key-misplaced') && !keyElement.classList.contains('key-correct')) {
-				keyElement.classList.remove('key-normal')
-				keyElement.classList.add('key-incorrect')
-			}
+				if (!keyElement.classList.contains('key-misplaced') && !keyElement.classList.contains('key-correct')) {
+					keyElement.classList.remove('key-normal')
+					keyElement.classList.add('key-incorrect', 'fade')
+				}
+			}, 1500)
 		}
 	}
 
