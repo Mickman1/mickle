@@ -2,7 +2,6 @@ let correctWord = generateCorrectWord('./correctWords.json')
 let wordList = readWordsFile('./words.json')
 let boardEmptySlots = [...Array(6)].map(() => Array(5))
 let boardTiles = [...Array(6)].map(() => Array(5))
-let filledTiles = []
 let unfoundLetters = correctWord
 let currentRow = 0
 let currentSlot = 0
@@ -20,7 +19,12 @@ for (let i = 0; i < 6; i++) {
 	}
 }
 
-document.addEventListener('keydown', function(e) {
+// Event 'keydown' for keyboard presses
+// Event 'click' for on-screen keyboard clicks / taps
+document.addEventListener('keydown', keyPress)
+document.addEventListener('click', keyClick)
+
+function keyPress(e) {
 	switch (e.key) {
 		case 'Backspace':
 			return backspacePressed();
@@ -45,14 +49,15 @@ document.addEventListener('keydown', function(e) {
 	boardEmptySlots[currentRow][currentSlot].classList.remove('empty')
 	boardEmptySlots[currentRow][currentSlot].classList.add('temp-tile')
 
-	let tile = `<div class='tile' id='tile-${currentRow}-${currentSlot}' data-animation='pop'>${e.key.toLowerCase()}</div>`
+	let tile = `<div class='tile' id='tile-${currentRow}-${currentSlot}'>${e.key.toLowerCase()}</div>`
 	boardEmptySlots[currentRow][currentSlot].insertAdjacentHTML('beforeend', tile)
+	boardEmptySlots[currentRow][currentSlot].setAttribute('data-animation', 'pop')
 	boardTiles[currentRow][currentSlot] = document.getElementById(`tile-${currentRow}-${currentSlot}`)
 
 	currentSlot += 1
-})
+}
 
-document.addEventListener('click', function(e) {
+function keyClick(e) {
 	if (e.target.id == 'backspace') {
 		backspacePressed()
 		return;
@@ -69,13 +74,16 @@ document.addEventListener('click', function(e) {
 		// Emulate a key press for the right on-screen keyboard button
 		document.dispatchEvent(new KeyboardEvent('keydown', { 'key': button.innerText.toLowerCase() }))
 	}
-})
+}
 
 function backspacePressed() {
 	if (currentSlot > 0) {
 		boardTiles[currentRow][currentSlot - 1].remove()
+
 		boardEmptySlots[currentRow][currentSlot - 1].classList.add('empty')
 		boardEmptySlots[currentRow][currentSlot - 1].classList.remove('temp-tile')
+
+		boardEmptySlots[currentRow][currentSlot - 1].removeAttribute('data-animation')
 		
 		currentSlot -= 1
 
@@ -109,18 +117,13 @@ function enterPressed() {
 		
 		toastNum += 1
 
-		let toastDiv = `<div class='toaster' id='game-toaster'></div>`
-		document.getElementById('game-container').insertAdjacentHTML('beforeend', toastDiv)
-		
-		let toast = `<div class='toast' id='toast-${toastNum}'>${capitalizeFirstLetter(fullSubmittedWord)} is not a valid word!</div>`
-		document.getElementById('game-toaster').insertAdjacentHTML('beforeend', toast)
-
-		fadeOutEffect(toastNum)
+		generateToast(`${capitalizeFirstLetter(fullSubmittedWord)} is not a valid word!`)
 
 		return;
 	}
 
 	unfoundLetters = correctWord
+	let filledTiles = []
 	let tileColorsArray = Array(5)
 
 	for (let i = 0; i < 5; i++) {
@@ -176,6 +179,14 @@ function enterPressed() {
 
 	flipTiles(tileColorsArray, currentRow)
 
+	// If there's no unfound letters left, player pressed Enter with all greens / correct tiles
+	if (unfoundLetters === '') {
+		winGame(currentRow)
+
+		document.removeEventListener('keydown', keyPress)
+		document.removeEventListener('click', keyClick)
+	}
+
 	currentRow += 1
 	currentSlot = 0
 	filledTiles = []
@@ -205,6 +216,30 @@ function flipTiles(tileColorsArray, row) {
 	}
 }
 
+function winGame(winningRow) {
+	let delay = 1667
+
+	for (let i = 0; i < 5; i++) {
+		setTimeout(function() {
+			document.getElementById(`slot-${winningRow}-${i}`).setAttribute('data-animation', 'bounce')
+		}, delay)
+
+		delay += 100
+	}
+
+	generateToast('Genius!', 0.035)
+}
+
+function generateToast(message, opacityChange) {
+	let toastDiv = `<div class='toaster' id='game-toaster'></div>`
+	document.getElementById('game-container').insertAdjacentHTML('beforeend', toastDiv)
+	
+	let toast = `<div class='toast' id='toast-${toastNum}'>${message}</div>`
+	document.getElementById('game-toaster').insertAdjacentHTML('beforeend', toast)
+
+	fadeOutEffect(toastNum, 0.035)
+}
+
 function readWordsFile(file) {
 	fetch(file)
 		.then(response => response.json())
@@ -226,7 +261,7 @@ function capitalizeFirstLetter(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function fadeOutEffect(toastNum) {
+function fadeOutEffect(toastNum, opacityChange = 0.05) {
 	var fadeTarget = document.getElementById(`toast-${toastNum}`)
 	var fadeEffect = setInterval(function () {
 		if (!fadeTarget.style.opacity) {
@@ -234,7 +269,7 @@ function fadeOutEffect(toastNum) {
 		}
 
 		if (fadeTarget.style.opacity > 0) {
-			fadeTarget.style.opacity -= 0.05
+			fadeTarget.style.opacity -= opacityChange
 		}
 
 		else {
