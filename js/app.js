@@ -117,7 +117,7 @@ function enterPressed() {
 		
 		toastNum += 1
 
-		generateToast(`${capitalizeFirstLetter(fullSubmittedWord)} is not a valid word!`)
+		generateToast(`${capitalizeFirstLetter(fullSubmittedWord)} is not a valid word!`, 0.05)
 
 		return;
 	}
@@ -222,22 +222,29 @@ function winGame(winningRow) {
 	for (let i = 0; i < 5; i++) {
 		setTimeout(function() {
 			document.getElementById(`slot-${winningRow}-${i}`).setAttribute('data-animation', 'bounce')
+			
+			if (i === 4) {
+				let successToastWords = ['Genius!', 'Great!', 'Bravo!']
+				let toastWord = successToastWords[Math.floor(Math.random() * successToastWords.length)]
+
+				generateToast(toastWord, 0.035, 1000)
+			}
 		}, delay)
 
 		delay += 100
 	}
-
-	generateToast('Genius!', 0.035)
 }
 
-function generateToast(message, opacityChange) {
+function generateToast(message, opacityChange, waitTime) {
 	let toastDiv = `<div class='toaster' id='game-toaster'></div>`
 	document.getElementById('game-container').insertAdjacentHTML('beforeend', toastDiv)
 	
 	let toast = `<div class='toast' id='toast-${toastNum}'>${message}</div>`
 	document.getElementById('game-toaster').insertAdjacentHTML('beforeend', toast)
 
-	fadeOutEffect(toastNum, 0.035)
+	setTimeout(() => {
+		fadeOutEffect(toastNum, opacityChange)
+	}, waitTime)
 }
 
 function readWordsFile(file) {
