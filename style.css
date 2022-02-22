@@ -144,7 +144,7 @@ html, body {
 	user-select: none;
 }
 
-.tile[data-animation='pop'] {
+.slot[data-animation='pop'] {
 	animation-name: PopIn;
 	animation-duration: 100ms;
 }
@@ -152,6 +152,11 @@ html, body {
 .tile[data-animation='shake'] {
 	animation-name: Shake;
 	animation-duration: 600ms;
+}
+
+.slot[data-animation='bounce'] {
+	animation-name: Bounce;
+	animation-duration: 1000ms;
 }
 
 @keyframes PopIn {
@@ -169,8 +174,8 @@ html, body {
 	animation-name: FlipIn;
 	animation-duration: 250ms;
 	animation-timing-function: ease-in;
-	will-change: transform;
 	animation-fill-mode: forwards;
+	will-change: transform;
 }
 
 @keyframes FlipIn {
@@ -186,8 +191,8 @@ html, body {
 	animation-name: FlipOut;
 	animation-duration: 250ms;
 	animation-timing-function: ease-in;
-	will-change: transform;
 	animation-fill-mode: forwards;
+	will-change: transform;
 }
 
 @keyframes FlipOut {
