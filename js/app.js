@@ -131,10 +131,11 @@ function enterPressed() {
 			// Add correct-tile to array of tiles to flip and color
 			tileColorsArray[i] = 'correct-tile'
 
+			// Color correct key green
 			let row = currentRow
 			let column = i
+			// Wait for letters to finish flipping before fade-in
 			setTimeout(function() {
-				// Color correct key green
 				let keyElement = document.getElementById(`key-${boardTiles[row][column].innerHTML}`)
 				keyElement.classList.remove('key-normal', 'key-misplaced', 'incorrect')
 				keyElement.classList.add('key-correct', 'fade')
@@ -155,10 +156,11 @@ function enterPressed() {
 			// Add misplaced-tile to array of tiles to flip and color
 			tileColorsArray[i] = 'misplaced-tile'
 			
+			// Color misplaced key yellow
 			let row = currentRow
 			let column = i
+			// Wait for letters to finish flipping before fade-in
 			setTimeout(function() {
-				// Color misplaced key yellow
 				let keyElement = document.getElementById(`key-${boardTiles[row][column].innerHTML}`)
 
 				if (!keyElement.classList.contains('key-correct')) {
@@ -175,10 +177,11 @@ function enterPressed() {
 			// Add incorrect-tile to array of tiles to flip and color
 			tileColorsArray[i] = 'incorrect-tile'
 
+			// Color incorrect key grey
 			let row = currentRow
 			let column = i
+			// Wait for letters to finish flipping before fade-in
 			setTimeout(function() {
-				// Color incorrect key grey
 				let keyElement = document.getElementById(`key-${boardTiles[row][column].innerHTML}`)
 
 				if (!keyElement.classList.contains('key-misplaced') && !keyElement.classList.contains('key-correct')) {
@@ -202,6 +205,13 @@ function enterPressed() {
 	currentRow += 1
 	currentSlot = 0
 	filledTiles = []
+
+	// If the player lost / is 'on' row 7, display correct word
+	if (currentRow === 6) {
+		setTimeout(function() {
+			generateToast(correctWord.toUpperCase(), 0.035, 1000)
+		}, 1667)
+	}
 }
 
 // Flip each tile in the current row, and color them on the 'Flip-Out' animation
