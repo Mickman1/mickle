@@ -7,6 +7,7 @@ let currentRow = 0
 let currentSlot = 0
 let toastNum = 0
 
+// Generate row and empty slot DOM elements, and add slots to boardEmptySlots[][]
 for (let i = 0; i < 6; i++) {
 	var row = `<div class='row' id=row-${i}>`
 
@@ -32,23 +33,27 @@ function keyPress(e) {
 			return enterPressed();
 	}
 
-	// Removes edge-cases like Function and Modifier keys
+	// Check for edge-case keys like Function and Modifiers
 	if (e.key.length > 1) {
 		return;
 	}
 
-	// Regex to check for a letter A-Z
+	// Regex to check for non A-Z keys (4, #, %, etc.)
 	if (!/[A-Za-z]+$/.test(e.key)) {
 		return;
 	}
 
+	// If all 5 columns are already filled with a full word, do nothing
 	if (currentSlot === 5) {
 		return;
 	}
 
+	// Remove the .empty class from the current slot and switch it out for .temp-tile
 	boardEmptySlots[currentRow][currentSlot].classList.remove('empty')
 	boardEmptySlots[currentRow][currentSlot].classList.add('temp-tile')
 
+	// Create tile DOM element with the newly pressed key as its innerHTML
+	// Give its slot the 'pop' animation
 	let tile = `<div class='tile' id='tile-${currentRow}-${currentSlot}'>${e.key.toLowerCase()}</div>`
 	boardEmptySlots[currentRow][currentSlot].insertAdjacentHTML('beforeend', tile)
 	boardEmptySlots[currentRow][currentSlot].setAttribute('data-animation', 'pop')
@@ -71,18 +76,19 @@ function keyClick(e) {
 			return;
 		}
 
-		// Emulate a key press for the right on-screen keyboard button
+		// Emulate a key press for the clicked on-screen keyboard button
 		document.dispatchEvent(new KeyboardEvent('keydown', { 'key': button.innerText.toLowerCase() }))
 	}
 }
 
 function backspacePressed() {
+	// Remove tile DOM element, .empty and .temp-tile classes from current slot
+	// Do nothing if there's no current letters
 	if (currentSlot > 0) {
 		boardTiles[currentRow][currentSlot - 1].remove()
 
 		boardEmptySlots[currentRow][currentSlot - 1].classList.add('empty')
 		boardEmptySlots[currentRow][currentSlot - 1].classList.remove('temp-tile')
-
 		boardEmptySlots[currentRow][currentSlot - 1].removeAttribute('data-animation')
 		
 		currentSlot -= 1
@@ -98,6 +104,7 @@ function enterPressed() {
 	}
 
 	let fullSubmittedWord = ''
+
 	for (let i = 0; i < 5; i++) {
 		fullSubmittedWord += boardTiles[currentRow][i].innerText
 	}
@@ -238,6 +245,8 @@ function flipTiles(tileColorsArray, row) {
 	}
 }
 
+// Add 'bounce' animation to each slot in the current row, with 100ms delay between each one
+// Only start the bounce 1667ms after Enter press (how long it takes for letters to flip)
 function winGame(winningRow) {
 	let delay = 1667
 
@@ -245,6 +254,7 @@ function winGame(winningRow) {
 		setTimeout(function() {
 			document.getElementById(`slot-${winningRow}-${i}`).setAttribute('data-animation', 'bounce')
 			
+			// Only display winning toast after the 5th letter bounces
 			if (i === 4) {
 				let successToastWords = ['Genius!', 'Great!', 'Bravo!']
 				let toastWord = successToastWords[Math.floor(Math.random() * successToastWords.length)]
@@ -257,6 +267,7 @@ function winGame(winningRow) {
 	}
 }
 
+// Display toast and fade out correctly, using toastNum to know its place in line
 function generateToast(message, opacityChange, waitTime) {
 	let toastDiv = `<div class='toaster' id='game-toaster'></div>`
 	document.getElementById('game-container').insertAdjacentHTML('beforeend', toastDiv)
@@ -269,27 +280,7 @@ function generateToast(message, opacityChange, waitTime) {
 	}, waitTime)
 }
 
-function readWordsFile(file) {
-	fetch(file)
-		.then(response => response.json())
-		.then(data => {
-			wordList = data.words
-		})
-}
-
-function generateCorrectWord(file) {
-	fetch(file)
-		.then(response => response.json())
-		.then(data => {
-			let correctWordList = data.correctWords
-			correctWord = correctWordList[Math.floor(Math.random() * correctWordList.length)]
-		})
-}
-
-function capitalizeFirstLetter(string) {
-	return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
+// Fade out toast by lowering opacity over time, and eventually remove the DOM element, bumping next toasts in line up
 function fadeOutEffect(toastNum, opacityChange = 0.05) {
 	var fadeTarget = document.getElementById(`toast-${toastNum}`)
 	var fadeEffect = setInterval(function () {
@@ -306,4 +297,27 @@ function fadeOutEffect(toastNum, opacityChange = 0.05) {
 			document.getElementById(`toast-${toastNum}`).remove()
 		}
 	}, 100)
+}
+
+// Read words file and set wordList to the array
+function readWordsFile(file) {
+	fetch(file)
+		.then(response => response.json())
+		.then(data => {
+			wordList = data.words
+		})
+}
+
+// Read correct words file and pick a random entry for correctWord from the array
+function generateCorrectWord(file) {
+	fetch(file)
+		.then(response => response.json())
+		.then(data => {
+			let correctWordList = data.correctWords
+			correctWord = correctWordList[Math.floor(Math.random() * correctWordList.length)]
+		})
+}
+
+function capitalizeFirstLetter(string) {
+	return string.charAt(0).toUpperCase() + string.slice(1);
 }
