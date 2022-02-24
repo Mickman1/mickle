@@ -99,7 +99,7 @@ html, body {
 }
 
 .empty {
-	border: 2px solid var(--color-incorrect);
+	border: 2px solid #3a3a3c;
 }
 
 .temp-tile {
