@@ -117,14 +117,14 @@ function enterPressed() {
 		// Sets timeout to remove them after 600ms
 		for (let i = 0; i < 5; i++) {
 			boardTiles[currentRow][i].setAttribute('data-animation', 'shake')
-			setTimeout(() => {
+			setTimeout(function() {
 				boardTiles[currentRow][i].removeAttribute('data-animation')
 			}, 600)
 		}
 		
 		toastNum += 1
 
-		generateToast(`${capitalizeFirstLetter(fullSubmittedWord)} is not a valid word!`, 0.05)
+		generateToast(`${capitalizeFirstLetter(fullSubmittedWord)} is not a valid word!`, 0.03)
 
 		return;
 	}
@@ -269,9 +269,6 @@ function winGame(winningRow) {
 
 // Display toast and fade out correctly, using toastNum to know its place in line
 function generateToast(message, opacityChange, waitTime) {
-	let toastDiv = `<div class='toaster' id='game-toaster'></div>`
-	document.getElementById('game-container').insertAdjacentHTML('beforeend', toastDiv)
-	
 	let toast = `<div class='toast' id='toast-${toastNum}'>${message}</div>`
 	document.getElementById('game-toaster').insertAdjacentHTML('beforeend', toast)
 
