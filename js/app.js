@@ -6,6 +6,7 @@ let unfoundLetters = correctWord
 let currentRow = 0
 let currentSlot = 0
 let toastNum = 0
+let emojiList = []
 
 // Generate row and empty slot DOM elements, and add slots to boardEmptySlots[][]
 for (let i = 0; i < 6; i++) {
@@ -199,6 +200,8 @@ function enterPressed() {
 		}
 	}
 
+	fillEmojiListRow(tileColorsArray)
+
 	flipTiles(tileColorsArray, currentRow)
 
 	// If there's no unfound letters left, player pressed Enter with all greens / correct tiles
@@ -207,6 +210,9 @@ function enterPressed() {
 
 		document.removeEventListener('keydown', keyPress)
 		document.removeEventListener('click', keyClick)
+
+		// Return so the currentRow doesn't get incremented and the game thinks the player lost
+		return endGame();
 	}
 
 	currentRow += 1
@@ -217,6 +223,8 @@ function enterPressed() {
 	if (currentRow === 6) {
 		setTimeout(function() {
 			generateToast(correctWord.toUpperCase(), 0.035, 1000)
+
+			return endGame();
 		}, 1667)
 	}
 }
@@ -260,11 +268,37 @@ function winGame(winningRow) {
 				let toastWord = successToastWords[Math.floor(Math.random() * successToastWords.length)]
 
 				generateToast(toastWord, 0.035, 1000)
+				console.log(emojiList)
 			}
 		}, delay)
 
 		delay += 100
 	}
+}
+
+function endGame() {
+	let formattedEmojiList = `Mickle ${emojiList.length}/6\r\n` + emojiList.join('\r\n')
+	navigator.clipboard.writeText(formattedEmojiList)
+}
+
+function fillEmojiListRow(tileColorsArray) {
+	let emojiRow = ''
+
+	for (let i = 0; i < 5; i++) {
+		switch (tileColorsArray[i]) {
+			case 'correct-tile' :
+				emojiRow += '🟩'
+				break
+			case 'misplaced-tile' :
+				emojiRow += '🟨'
+				break
+			case 'incorrect-tile' :
+				emojiRow += '⬛'
+				break
+		}
+	}
+
+	emojiList.push(emojiRow)
 }
 
 // Display toast and fade out correctly, using toastNum to know its place in line
