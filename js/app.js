@@ -204,15 +204,26 @@ function enterPressed() {
 
 	flipTiles(tileColorsArray, currentRow)
 
-	// If there's no unfound letters left, player pressed Enter with all greens / correct tiles
-	if (unfoundLetters === '') {
-		winGame(currentRow)
+	// Loop through current tile colors, check if all are green / correct
+	// If so, call winGame() and endGame()
+	for (let i = 0; i < 5; i++) {
+		// Break out of the for loop if any tile isn't correct
+		if (tileColorsArray[i] !== 'correct-tile') {
+			break
+		}
 
-		document.removeEventListener('keydown', keyPress)
-		document.removeEventListener('click', keyClick)
+		// If it's on the last loop, it means all 5 tiles were green, so trigger win
+		if (i === 4) {
+			console.log(tileColorsArray)
+			winGame(currentRow)
 
-		// Return so the currentRow doesn't get incremented and the game thinks the player lost
-		return endGame();
+			// Disallow any additional game input
+			document.removeEventListener('keydown', keyPress)
+			document.removeEventListener('click', keyClick)
+
+			// Return so the currentRow doesn't get incremented and the game thinks the player lost
+			return endGame();
+		}
 	}
 
 	currentRow += 1
